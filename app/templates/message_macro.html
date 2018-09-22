@@ -1,0 +1,20 @@
+{% macro show_message(category, message) -%}
+    {% if category == 'message' %}
+        {% set alert_type = 'alert-info' %}
+        {% set alert_heading = 'Notification' %}
+    {% elif category == 'error' %}
+        {% set alert_type = 'alert-danger' %}
+        {% set alert_heading = 'Error' %}
+    {% else %}
+        {% set alert_type = 'alert-primary' %}
+        {% set alert_heading = 'Message' %}
+    {% endif %}
+
+    <div class="alert {{ alert_type }} alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">{{ alert_heading }}</h4>
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+        {{ message }}
+    </div>
+{%- endmacro %}
