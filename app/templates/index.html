@@ -1,5 +1,28 @@
 {% extends "base.html" %}
-{% block content %}
-<h1>content</h1>
-{% endblock %}
 
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Upload a reactor state</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="csv_upload">Reactor state CSV file</label>
+                    <input type="file" class="form-control-file" id="csv_upload">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Optimized manipulable variables</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <p>sect_1_flow_16: 0.1337</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
