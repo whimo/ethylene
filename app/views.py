@@ -14,7 +14,15 @@ def get_answer(params):
 def index():
     csv_form = CSV_Form()
     if csv_form.validate_on_submit():
-        flash('Success', 'message')
+        file = csv_form.file.data
+        if file:
+            file.save('upload.csv')
+            df = pandas.read_csv('upload.csv')
+            params = dict(df.iloc[0])
+
+            return render_template('index.html', form=csv_form, optimized=get_answer(params))
+        else:
+            flash('Failed to fetch the file. Please try again.')
     else:
         for _, err_list in csv_form.errors.items():
             for err in err_list:

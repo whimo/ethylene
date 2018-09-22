@@ -20,14 +20,16 @@
     </div>
 </div>
 
-<div class="card mt-3">
-    <div class="card-body">
-        <h3 class="card-title">Optimized manipulable variables</h3>
-        <div class="row">
-            <div class="col-md-4">
-                <p>sect_1_flow_16: 0.1337</p>
+{% if optimized %}
+    <div class="card mt-3">
+        <div class="card-body">
+            <h3 class="card-title">Optimized manipulable variables</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>{{ optimized }}</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}
 {% endblock %}
