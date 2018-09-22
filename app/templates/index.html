@@ -20,17 +20,22 @@
     </div>
 </div>
 
-{% if optimized %}
+{% if optimized and target %}
     <div class="card mt-3">
         <div class="card-body">
-            <h3 class="card-title">Optimized manipulable variables</h3>
+            <h3 class="card-title">Results</h3>
             <div class="row">
                 <div class="col-md-4">
+                    <p>Optimized manipulable variables:</p>
                     <p>
                         {% for key, val in optimized.items() %}
                             {{ key }}: {{ val }}<br>
                         {% endfor %}
                     </p>
+
+                    <hr>
+
+                    <p>Target: {{ target }}</p>
                 </div>
             </div>
         </div>

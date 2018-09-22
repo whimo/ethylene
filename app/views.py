@@ -9,7 +9,7 @@ def get_answer(params):
                     'sect1_temperature_5', 'sect1_temperature_10',
                     'sect1_temperature_11']
     answer = {m: random.random() for m in manipulables}
-    return answer
+    return answer, random.random()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -31,7 +31,8 @@ def index():
                     df = pandas.read_csv('upload.csv')
                     try:
                         params = dict(df.iloc[0])
-                        return render_template('index.html', form=csv_form, optimized=get_answer(params))
+                        optimized, target = get_answer(params)
+                        return render_template('index.html', form=csv_form, optimized=optimized, target=target)
                     except:
                         flash('Invalid CSV file.', 'error')
         else:
