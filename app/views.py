@@ -8,8 +8,10 @@ def get_answer(params):
     manipulables = ['sect1_flow_16', 'sect1_flow_22', 'sect1_temperature_1',
                     'sect1_temperature_5', 'sect1_temperature_10',
                     'sect1_temperature_11']
-    answer = {m: random.random() for m in manipulables}
-    return answer, random.random()
+    predictions = {m: random.random() for m in manipulables}
+    answer = {m: [params[m], predictions[m]] for m in manipulables}
+    target = random.random()
+    return answer, target
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
