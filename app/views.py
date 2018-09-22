@@ -17,15 +17,25 @@ def index():
     if csv_form.validate_on_submit():
         file = csv_form.file.data
         if file:
-            file.save('upload.csv')
-            df = pandas.read_csv('upload.csv')
-            print(df)
-            print(dir(df))
-            params = dict(df.iloc[0])
+            filename = file.filename
+            if filename == '' or filename is None:
+                flash('Invalid filename.', 'error')
+            else:
+                filename = filename.split('.')
+                extension = filename[-1]
 
-            return render_template('index.html', form=csv_form, optimized=get_answer(params))
+                if extension not in app.config['ALLOWED_FORMATS']:
+                    flash('Invalid file format.', 'error')
+                else:
+                    file.save('upload.csv')
+                    df = pandas.read_csv('upload.csv')
+                    print(df)
+                    print(dir(df))
+                    params = dict(df.iloc[0])
+
+                    return render_template('index.html', form=csv_form, optimized=get_answer(params))
         else:
-            flash('Failed to fetch the file. Please try again.')
+            flash('Failed to fetch the file. Please try again.', 'error')
     else:
         for _, err_list in csv_form.errors.items():
             for err in err_list:
