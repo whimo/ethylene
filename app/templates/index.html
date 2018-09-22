@@ -26,7 +26,11 @@
             <h3 class="card-title">Optimized manipulable variables</h3>
             <div class="row">
                 <div class="col-md-4">
-                    <p>{{ optimized }}</p>
+                    <p>
+                        {% for key, val in optimized.items() %}
+                            {{ key }}: {{ val }}<br>
+                        {% endfor %}
+                    </p>
                 </div>
             </div>
         </div>
