@@ -7,6 +7,7 @@ def get_answer(params):
                     'sect1_temperature_5', 'sect1_temperature_10',
                     'sect1_temperature_11']
     answer = {m: random.random() for m in manipulables}
+    return answer
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
