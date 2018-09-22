@@ -29,11 +29,11 @@ def index():
                 else:
                     file.save('upload.csv')
                     df = pandas.read_csv('upload.csv')
-                    print(df)
-                    print(dir(df))
-                    params = dict(df.iloc[0])
-
-                    return render_template('index.html', form=csv_form, optimized=get_answer(params))
+                    try:
+                        params = dict(df.iloc[0])
+                        return render_template('index.html', form=csv_form, optimized=get_answer(params))
+                    except:
+                        flash('Invalid CSV file.', 'error')
         else:
             flash('Failed to fetch the file. Please try again.', 'error')
     else:
