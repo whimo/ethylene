@@ -11,13 +11,13 @@ class ReactorState:
 
     def next(self):
         if self.index >= len(self.states_df) - 1:
-            return None
+            return None, True
 
         state = self.states_df.iloc[self.index].values
 
         self.index += 1
 
-        return state
+        return state, False
 
     def shape(self):
         return self.states_df.shape
