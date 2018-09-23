@@ -2,17 +2,20 @@ from . import app
 from .forms import CSV_Form
 from flask import render_template, flash
 import pandas
-import random
+from .model_to_backend import optimal_values
+import sys, traceback
 
 
 def get_answer(params):
     manipulables = ['sect1_flow_16', 'sect1_flow_22', 'sect1_temperature_1',
                     'sect1_temperature_5', 'sect1_temperature_10',
                     'sect1_temperature_11']
-    predictions = {m: random.random() for m in manipulables}
-    answer = {m: [params[m], predictions[m]] for m in manipulables}
-    target = random.random()
-    return answer, target
+
+    x, target = optimal_values(params)
+    predictions = {m: x[i] for i, m in enumerate(manipulables)}
+    answer = {m: [float(params[m].values[0]), predictions[m]] for m in manipulables}
+    return answer, -target
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -33,13 +36,16 @@ def index():
                     file.save('upload.csv')
                     df = pandas.read_csv('upload.csv')
                     try:
-                        params = dict(df.iloc[0])
+                        params = df
                         optimized, target = get_answer(params)
                         return render_template('index.html',
                                                form=csv_form,
                                                optimized=optimized,
                                                target=target)
-                    except Exception:
+                    except Exception as err:
+                        exc_info = sys.exc_info()
+                        traceback.print_exception(*exc_info)
+                        del exc_info
                         flash('Invalid CSV file.', 'error')
         else:
             flash('Failed to fetch the file. Please try again.', 'error')
