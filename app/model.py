@@ -75,16 +75,16 @@ class Model:
         '''
         train, labels = generate_train_data(data)
 
-        self.target_estimator.fit(train, labels[self.target_column])
-        self.constraints_estimator.fit(train, labels[self.constraint_columns])
+        self.target_estimator.fit(train.values, labels[self.target_column].values)
+        self.constraints_estimator.fit(train.values, labels[self.constraint_columns].values)
 
         self.test_columns = train.columns
 
     def predict(self, data):
-        predicted_constraints = self.constraints_estimator.predict(data[self.test_columns])
+        predicted_constraints = self.constraints_estimator.predict(data[self.test_columns].values)
 
         predicted_data = {self.constraint_columns[i]: constraint
                           for i, constraint in enumerate(predicted_constraints.T)}
-        predicted_data[TARGET_COLUMN] = self.target_estimator.predict(data[self.test_columns])
+        predicted_data[TARGET_COLUMN] = self.target_estimator.predict(data[self.test_columns].values)
 
         return pandas.DataFrame(predicted_data)
