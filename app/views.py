@@ -12,8 +12,7 @@ def get_answer(params):
     predictions = {m: random.random() for m in manipulables}
     answer = {m: [params[m], predictions[m]] for m in manipulables}
     target = random.random()
-    return answer, ta
-    rget
+    return answer, target
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
