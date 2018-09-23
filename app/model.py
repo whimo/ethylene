@@ -2,9 +2,11 @@ import numpy as np
 import pandas
 
 from datetime import datetime
-from sklearn.linear_model import Lasso
+from sklearn.linear_model import Lasso, Ridge
+from mlxtend.regressor import StackingCVRegressor
 
-LASSO_TARGET_PARAMS =      {'alpha': 0.1, 'max_iter': 3500}
+LASSO_TARGET_PARAMS =      {'alpha': 0.07, 'max_iter': 4000}
+RIDGE_TARGET_PARAMS =      {'alpha': 3000, 'max_iter': 2000}
 LASSO_CONSTRAINTS_PARAMS = {'alpha': 0.5, 'max_iter': 2000}
 
 CONSTRAINT_COLUMNS = ['sect1_pressure_delta_{}'.format(i) for i in range(1, 11)] +\
@@ -56,13 +58,16 @@ def generate_train_data(data,
 
 class Model:
     def __init__(self,
-                 target_params=LASSO_TARGET_PARAMS,
-                 constraints_params=LASSO_CONSTRAINTS_PARAMS,
+                 lasso_target_params=LASSO_TARGET_PARAMS,
+                 ridge_target_params=RIDGE_TARGET_PARAMS,
+                 lasso_constraints_params=LASSO_CONSTRAINTS_PARAMS,
                  constraint_columns=CONSTRAINT_COLUMNS,
                  target_column=TARGET_COLUMN):
 
-        self.target_estimator =      Lasso(**target_params)
-        self.constraints_estimator = Lasso(**constraints_params)
+        self.target_estimator = StackingCVRegressor(regressors=(Lasso(**lasso_target_params),
+                                                                Ridge(**ridge_target_params)),
+                                                    meta_regressor=Ridge(alpha=0.01))
+        self.constraints_estimator = Lasso(**lasso_constraints_params)
 
         self.constraint_columns = constraint_columns
         self.target_column = target_column
