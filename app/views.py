@@ -13,7 +13,7 @@ def get_answer(params):
 
     x, target = optimal_values(params)
     predictions = {m: x[i] for i, m in enumerate(manipulables)}
-    answer = {m: [params[m], predictions[m]] for m in manipulables}
+    answer = {m: [float(params[m].values[0]), predictions[m]] for m in manipulables}
     return answer, -target
 
 
