@@ -1,8 +1,9 @@
 from . import app
 from .forms import CSV_Form
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, flash
 import pandas
 import random
+
 
 def get_answer(params):
     manipulables = ['sect1_flow_16', 'sect1_flow_22', 'sect1_temperature_1',
@@ -11,7 +12,8 @@ def get_answer(params):
     predictions = {m: random.random() for m in manipulables}
     answer = {m: [params[m], predictions[m]] for m in manipulables}
     target = random.random()
-    return answer, target
+    return answer, ta
+    rget
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -34,8 +36,11 @@ def index():
                     try:
                         params = dict(df.iloc[0])
                         optimized, target = get_answer(params)
-                        return render_template('index.html', form=csv_form, optimized=optimized, target=target)
-                    except:
+                        return render_template('index.html',
+                                               form=csv_form,
+                                               optimized=optimized,
+                                               target=target)
+                    except Exception:
                         flash('Invalid CSV file.', 'error')
         else:
             flash('Failed to fetch the file. Please try again.', 'error')
